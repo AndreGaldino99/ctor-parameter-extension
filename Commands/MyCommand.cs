@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Runtime;
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
 
 namespace VSIXProject1
 {
@@ -31,36 +34,81 @@ namespace VSIXProject1
         {
             var guid = Guid.NewGuid();
 
-            var newFileContent = File.ReadAllText(filePath);
+            string codigoFonte = "using System; " + System.IO.File.ReadAllText(filePath);
             string pastaSaidaCompilacao = "C:\\Temp";
 
-            using (StreamWriter sw = new StreamWriter($"{pastaSaidaCompilacao}\\newfile{guid}.cs"))
-            {
-                sw.WriteLine(newFileContent);
-            }
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            CompilerParameters parametros = new CompilerParameters();
 
-            filePath = $"{pastaSaidaCompilacao}\\newfile{guid}.cs";
+            #region References
+            
+            string myPath = "C:\\Users\\Andre Galdino\\source\\repos\\";
+            string tempPath = "C:\\Temp\\";
+            parametros.ReferencedAssemblies.Add($"{tempPath}System.dll");
+            parametros.ReferencedAssemblies.Add($"{tempPath}System.Runtime.dll");
+            parametros.ReferencedAssemblies.Add($"{myPath}Import.Movimentacao\\bin\\Debug\\net6.0\\Import.Movimentacao.dll");
 
-            // Comando que você deseja executar (csc.exe neste caso)
+            #endregion References
 
-            using (StreamWriter sw = new StreamWriter($"{pastaSaidaCompilacao}\\CompilarNewFile{guid}.bat"))
-            {
-                sw.WriteLine($@"path=%path%;C:\Windows\Microsoft.NET\Framework\v4.0.30319");
-                sw.WriteLine($@"csc -out:{pastaSaidaCompilacao}\SysthExtension{guid}.dll -target:library {filePath}");
-            }
+            parametros.OutputAssembly = $"{pastaSaidaCompilacao}\\SysthExtension{guid}.dll";
 
-            System.Diagnostics.Process.Start($"{pastaSaidaCompilacao}\\CompilarNewFile{guid}.bat").WaitForExit();
+            CompilerResults resultados = provider.CompileAssemblyFromSource(parametros, codigoFonte);
 
             Assembly teste = Assembly.LoadFrom($"{pastaSaidaCompilacao}\\SysthExtension{guid}.dll");
 
 
             var classType = teste.GetExportedTypes().FirstOrDefault();
 
-            List<string> listConstructorProperty = (from i in classType.GetProperties()
-                                                    select $"{GetTypeName(i.PropertyType)} {GetPropertyName(i.Name)}").ToList();
+            var listConstructorProperty = new List<string>();
+            foreach (var type in classType.GetProperties())
+            {
+                var pt = string.Empty;
+                var pn = string.Empty;
+                try
+                {
+                    pt = GetTypeName(type.PropertyType);
+                }
+                catch (Exception e)
+                {
+                    var listalinhas = codigoFonte.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
-            List<string> listBodyConstructorProperty = (from i in classType.GetProperties()
-                                                        select $"{i.Name} = {GetPropertyName(i.Name)};").ToList();
+                    var x = listalinhas?.Where(x => x.Contains(type.Name))?.FirstOrDefault()?.Trim()?.Split()?.ToList() ?? new List<string>();
+
+                    var index = x.IndexOf(type.Name);
+
+                    pt = !string.IsNullOrEmpty(x[index-1]) ? x[index-1] : type.Name;   
+                }
+                try
+                {
+                    pn = GetPropertyName(type.Name);
+                }
+                catch (Exception e)
+                {
+                    pn = "";
+                }
+
+                listConstructorProperty.Add($"{pt} {pn}");
+            }
+
+
+            var listBodyConstructorProperty = new List<string>();
+            foreach (var type in classType.GetProperties())
+            {
+                var pt = string.Empty;
+                
+                try
+                {
+                    pt = $"{type.Name} = {GetPropertyName(type.Name)};";
+                }
+                catch (Exception e)
+                {
+                    pt = $"{type.Name} = ;";
+                }
+
+
+                listBodyConstructorProperty.Add(pt);
+            }
+
 
             StringBuilder populatedConstructor = new StringBuilder();
             populatedConstructor.AppendLine($"public {classType.Name}({string.Join(", ", listConstructorProperty)})");
@@ -72,6 +120,7 @@ namespace VSIXProject1
             populatedConstructor.AppendLine("}");
 
             return populatedConstructor;
+
         }
 
 
@@ -93,9 +142,8 @@ namespace VSIXProject1
                     return "long?";
                 case Type _ when type == typeof(string):
                     return "string";
+                    default: return type.Name;
             }
-
-            return default;
         }
     }
 }
