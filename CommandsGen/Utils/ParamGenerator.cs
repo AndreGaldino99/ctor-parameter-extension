@@ -10,7 +10,28 @@ namespace VSIXProject1.CommandsGen.Utils
             var listP = new List<string>();
             foreach (var p in parameter)
             {
-                listP.Add($"{(p.isQuery && genRefitAnnotations ? $"[Query(\"{p.ParamName}\")]" : "")}{p.ParamType} {p.ParamName}");
+                if (!p.isHeader)
+                {
+                    listP.Add($"{(p.isQuery && genRefitAnnotations ? $"[Query(\"{(!string.IsNullOrEmpty(p.QueryParamName) ? p.QueryParamName : p.ParamName)}\")]" : "")}{p.ParamType} {p.ParamName}");
+                }
+                else
+                {
+                    if (genRefitAnnotations)
+                    {
+                        listP.Add($"{(p.isQuery && genRefitAnnotations ? $"[Query(\"{(!string.IsNullOrEmpty(p.QueryParamName) ? p.QueryParamName : p.ParamName)}\")]" : "")}{p.ParamType} {p.ParamName}");
+                    }
+                }
+            }
+            string result = string.Join(",", listP);
+            return result;
+        }
+
+        public static string GetParamsWithoutType(List<CodeGeneratorClassParam> parameter)
+        {
+            var listP = new List<string>();
+            foreach (var p in parameter)
+            {
+                listP.Add($"{p.ParamName}");
             }
             string result = string.Join(",", listP);
             return result;

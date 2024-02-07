@@ -9,7 +9,8 @@ namespace VSIXProject1.Models
         public string RefitRoute { get; set; }
         public EnumMethod Method { get; set; }
         public List<CodeGeneratorClassParam> Params { get; set; }
-        public List<int> ErrorsCode { get; set; }
-        public int SuccessCode { get; set; }
+        public List<HttpStatusCode> ErrorsCode { get; set; }
+        public HttpStatusCode SuccessCode { get; set; }
+        public bool ReturnResponseIsList { get; set; }
     }
 }
