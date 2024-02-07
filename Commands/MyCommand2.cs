@@ -30,6 +30,7 @@ namespace VSIXProject1
                                 isQuery = true,
                                 ParamName = "query",
                                 ParamType = "string",
+                                isObject = false
                             }
                         },
                         RefitRoute = "/api/code/",
