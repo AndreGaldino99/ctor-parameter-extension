@@ -51,8 +51,9 @@
     <Compile Include="CommandsGen\GenOutput.cs" />
     <Compile Include="CommandsGen\GenRefit.cs" />
     <Compile Include="CommandsGen\GenService.cs" />
+    <Compile Include="CommandsGen\Utils\ParamGenerator.cs" />
     <Compile Include="Commands\MyCommand2.cs" />
-    <Compile Include="Models\CodeGeneratorClasses.cs" />
+    <Compile Include="Models\CodeGeneratorMethod.cs" />
     <Compile Include="Models\CodeGeneratorClassParam.cs" />
     <Compile Include="Models\EnumMethod.cs" />
     <Compile Include="Models\MainCodeGenerator.cs" />

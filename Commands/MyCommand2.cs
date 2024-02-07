@@ -14,12 +14,13 @@ namespace VSIXProject1
             var main = new MainCodeGenerator
             {
                 BaseName = "Teste",
-                Classes = new List<CodeGeneratorClasses>
+                BaseNamespace = "MSHarmonit.Teste",
+                GenerateRoot = false,
+                Method = new List<CodeGeneratorMethod>
                 {
-                    new CodeGeneratorClasses
+                    new CodeGeneratorMethod
                     {
                         ErrorsCode = new List<int> {400,404,401},
-                        GenerateRoot = false,
                         Method = EnumMethod.HttpGet,
                         MethodDesc = "Teste Descricao",
                         MethodName = "TestMethod",
@@ -42,7 +43,7 @@ namespace VSIXProject1
             GenController.GenerateController(main);
             GenIService.GenerateIService(main);
             GenService.GenerateService(main);
-            GenRefit.GenerateIRefit(main);
+            var refit = GenRefit.GenerateIRefit(main);
             GenInput.GenerateInput(main);
             GenOutput.GenerateOutput(main);
         }
