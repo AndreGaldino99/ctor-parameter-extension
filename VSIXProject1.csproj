@@ -45,6 +45,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CommandsGen\GenController.cs" />
+    <Compile Include="CommandsGen\GenInput.cs" />
+    <Compile Include="CommandsGen\GenIService.cs" />
+    <Compile Include="CommandsGen\GenOutput.cs" />
+    <Compile Include="CommandsGen\GenRefit.cs" />
+    <Compile Include="CommandsGen\GenService.cs" />
+    <Compile Include="Commands\MyCommand2.cs" />
+    <Compile Include="Models\CodeGeneratorClasses.cs" />
+    <Compile Include="Models\CodeGeneratorClassParam.cs" />
+    <Compile Include="Models\EnumMethod.cs" />
+    <Compile Include="Models\MainCodeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\MyCommand.cs" />
     <Compile Include="VSIXProject1Package.cs" />

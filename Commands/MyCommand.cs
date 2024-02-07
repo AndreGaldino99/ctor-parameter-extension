@@ -18,7 +18,7 @@ namespace VSIXProject1
 
             if (codeClass != null)
             {
-                List<(string, string, string)> lista = new List<(string, string, string)> ();
+                List<(string, string, string)> lista = new List<(string, string, string)>();
                 foreach (CodeProperty property in codeClass.Members.OfType<CodeProperty>())
                 {
                     string propertyName = property.Name;
