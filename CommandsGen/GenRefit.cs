@@ -12,6 +12,10 @@ namespace VSIXProject1.CommandsGen
         public static string GenerateIRefit(MainCodeGenerator main)
         {
             var iRefit = new List<string>();
+            iRefit.Add("using Refit;");
+
+            iRefit.Add("");
+
             iRefit.Add($"namespace {main.BaseNamespace}.ApiClient.RefitInterfaces;");
             iRefit.Add($"public interface I{main.BaseName}Refit");
             iRefit.Add("{");

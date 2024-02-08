@@ -12,6 +12,13 @@ namespace VSIXProject1.CommandsGen
         public static string GenerateService(MainCodeGenerator main)
         {
             var service = new List<string>();
+            service.Add("using Harmonit.Microservice.Base.Library.BaseService;");
+            service.Add($"using {main.BaseNamespace}.ApiClient.RefitInterfaces;");
+            service.Add($"using {main.BaseNamespace}.Arguments;");
+            service.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
+            service.Add($"using {main.BaseNamespace}.Domain.Interfaces;");
+            service.Add("");
+
             service.Add($"namespace {main.BaseNamespace}.Domain.Services;");
             service.Add($"public class {main.BaseName}Service(I{main.BaseName}Refit refit) : BaseService_1<I{main.BaseName}Refit>(refit), I{main.BaseName}Service");
             service.Add("{");

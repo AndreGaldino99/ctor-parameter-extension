@@ -1,8 +1,5 @@
-﻿
-using Community.VisualStudio.Toolkit;
-using EnvDTE;
+﻿using EnvDTE;
 using System.Collections.Generic;
-using System.IO;
 using VSIXProject1.CommandsGen;
 using VSIXProject1.CommandsGen.Utils;
 using VSIXProject1.Models;

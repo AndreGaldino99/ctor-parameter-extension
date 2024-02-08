@@ -11,6 +11,12 @@ namespace VSIXProject1.CommandsGen
         public static string GenerateIService(MainCodeGenerator main)
         {
             var iService = new List<string>();
+
+            iService.Add($"using Harmonit.Microservice.Base.Library.BaseService;");
+            iService.Add($"using {main.BaseNamespace}.Arguments;");
+            iService.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
+            iService.Add($"");
+
             iService.Add($"namespace {main.BaseNamespace}.Domain.Interfaces;");
             iService.Add($"public interface I{main.BaseName}Service : IBaseService_0");
             iService.Add("{");

@@ -15,6 +15,16 @@ namespace VSIXProject1.CommandsGen
         public static string GenerateController(MainCodeGenerator main)
         {
             var controller = new List<string>();
+
+            controller.Add($"using Harmonit.Microservice.Base.Library.BaseController;");
+            controller.Add($"using Harmonit.Microservice.Base.Library.Generic;");
+            controller.Add($"using {main.BaseNamespace}.Arguments;");
+            controller.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
+            controller.Add($"using {main.BaseNamespace}.Domain.Interfaces;");
+            controller.Add($"using Harmonit.Notifications.Arguments;");
+            controller.Add($"using Microsoft.AspNetCore.Mvc;");
+            controller.Add("");
+
             controller.Add($"namespace {main.BaseNamespace}.Api.Controllers;");
             controller.Add("");
             controller.Add("[Route(\"api/v1/[controller]\")]");
