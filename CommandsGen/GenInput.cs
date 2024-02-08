@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using VSIXProject1.Models;
+using MSExtension.Models;
 
-namespace VSIXProject1.CommandsGen
+namespace MSExtension.CommandsGen
 {
     public static class GenInput
     {

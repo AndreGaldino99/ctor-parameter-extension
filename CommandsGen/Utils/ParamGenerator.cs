@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using VSIXProject1.Models;
+using MSExtension.Models;
 
-namespace VSIXProject1.CommandsGen.Utils
+namespace MSExtension.CommandsGen.Utils
 {
     public static class ParamGenerator
     {
@@ -10,6 +10,10 @@ namespace VSIXProject1.CommandsGen.Utils
             var listP = new List<string>();
             foreach (var p in parameter)
             {
+                if(p.isHeader && p.isQuery)
+                {
+                    throw new Exception("Parâmentro não pode ser do tipo query e header ao mesmo tempo");
+                }
                 if (!p.isHeader)
                 {
                     listP.Add($"{(p.isQuery && genRefitAnnotations ? $"[Query(\"{(!string.IsNullOrEmpty(p.QueryParamName) ? p.QueryParamName : p.ParamName)}\")]" : "")}{p.ParamType} {p.ParamName}");

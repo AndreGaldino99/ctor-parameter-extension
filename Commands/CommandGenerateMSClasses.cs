@@ -1,13 +1,14 @@
 ﻿using EnvDTE;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using VSIXProject1.CommandsGen;
-using VSIXProject1.CommandsGen.Utils;
-using VSIXProject1.Models;
+using MSExtension.CommandsGen;
+using MSExtension.CommandsGen.Utils;
+using MSExtension.Models;
 
-namespace VSIXProject1
+namespace MSExtension
 {
-    [Command(PackageIds.MyCommand2)]
-    internal sealed class MyCommand2 : BaseCommand<MyCommand2>
+    [Command(PackageIds.CommandGenerateMSClasses)]
+    internal sealed class CommandGenerateMSClasses : BaseCommand<CommandGenerateMSClasses>
     {
         protected override void Execute(object sender, EventArgs e)
         {
@@ -16,6 +17,7 @@ namespace VSIXProject1
                 BaseName = "Billet",
                 BaseNamespace = "Harmonit.Microservice.PjBank",
                 GenerateRoot = true,
+                MicroServiceName = "pjbank",
                 Method = new List<CodeGeneratorMethod>
                 {
                     new CodeGeneratorMethod
@@ -42,6 +44,9 @@ namespace VSIXProject1
                     }
                 }
             };
+
+
+            var teste = JsonConvert.SerializeObject(main);
 
             var controller = GenController.GenerateController(main);
             var iService = GenIService.GenerateIService(main);

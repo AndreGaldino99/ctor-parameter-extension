@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSIXProject1", "VSIXProject1.csproj", "{CC4F2A7D-EC93-440B-B50F-FF6D4C43DCA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSExtension", "MSExtension.csproj", "{CC4F2A7D-EC93-440B-B50F-FF6D4C43DCA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

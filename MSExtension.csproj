@@ -54,7 +54,7 @@
     <Compile Include="CommandsGen\Utils\ParamGenerator.cs" />
     <Compile Include="CommandsGen\Utils\StringExtension.cs" />
     <Compile Include="CommandsGen\Utils\TranslateService.cs" />
-    <Compile Include="Commands\MyCommand2.cs" />
+    <Compile Include="Commands\CommandGenerateMSClasses.cs" />
     <Compile Include="Models\CodeGeneratorMethod.cs" />
     <Compile Include="Models\CodeGeneratorClassParam.cs" />
     <Compile Include="Models\EnumMethod.cs" />
@@ -63,7 +63,7 @@
     <Compile Include="Models\Utils\TranslatedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\MyCommand.cs" />
-    <Compile Include="VSIXProject1Package.cs" />
+    <Compile Include="MSExtensionPackage.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

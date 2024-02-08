@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VSIXProject1.Models
+namespace MSExtension.Models
 {
     public class CodeGeneratorMethod
     {

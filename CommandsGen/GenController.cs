@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using VSIXProject1.CommandsGen.Utils;
-using VSIXProject1.Models;
-using VSIXProject1.Models.Utils;
+using MSExtension.CommandsGen.Utils;
+using MSExtension.Models;
+using MSExtension.Models.Utils;
 
-namespace VSIXProject1.CommandsGen
+namespace MSExtension.CommandsGen
 {
     public static class GenController
     {
@@ -27,7 +27,7 @@ namespace VSIXProject1.CommandsGen
 
             controller.Add($"namespace {main.BaseNamespace}.Api.Controllers;");
             controller.Add("");
-            controller.Add("[Route(\"api/v1/[controller]\")]");
+            controller.Add($"[Route(\"api/{main.MicroServiceName}/[controller]\")]");
             controller.Add($"public class {main.BaseName}Controller(IApiDataService apiDataService, I{main.BaseName}Service service) : BaseController_1<I{main.BaseName}Service>(apiDataService, service)");
             controller.Add("{");
 

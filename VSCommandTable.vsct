@@ -6,9 +6,9 @@
 	<Include href="KnownImageIds.vsct"/>
 	<Include href="VSGlobals.vsct"/>
 
-	<Commands package="VSIXProject1">
+	<Commands package="MSExtension">
 		<Groups>
-			<Group guid="VSIXProject1" id="MyMenuGroup" priority="0x0600">
+			<Group guid="MSExtension" id="MyMenuGroup" priority="0x0600">
 				<Parent guid="VSMainMenu" id="Tools"/>
 			</Group>
 		</Groups>
@@ -16,33 +16,33 @@
 		<!--This section defines the elements the user can interact with, like a menu command or a button
         or combo box in a toolbar. -->
 		<Buttons>
-			<Button guid="VSIXProject1" id="MyCommand" priority="0x0100" type="Button">
-				<Parent guid="VSIXProject1" id="MyMenuGroup" />
+			<Button guid="MSExtension" id="MyCommand" priority="0x0100" type="Button">
+				<Parent guid="MSExtension" id="MyMenuGroup" />
 				<Icon guid="ImageCatalogGuid" id="StatusInformation" />
 				<CommandFlag>IconIsMoniker</CommandFlag>
 				<Strings>
 					<ButtonText>My Command</ButtonText>
-					<LocCanonicalName>.VSIXProject1.MyCommand</LocCanonicalName>
+					<LocCanonicalName>.MSExtension.MyCommand</LocCanonicalName>
 				</Strings>
 			</Button>
 
-			<Button guid="VSIXProject1" id="MyCommand2" priority="0x0100" type="Button">
-				<Parent guid="VSIXProject1" id="MyMenuGroup" />
+			<Button guid="MSExtension" id="CommandGenerateMSClasses" priority="0x0100" type="Button">
+				<Parent guid="MSExtension" id="MyMenuGroup" />
 				<Icon guid="ImageCatalogGuid" id="StatusInformation" />
 				<CommandFlag>IconIsMoniker</CommandFlag>
 				<Strings>
-					<ButtonText>My Command2</ButtonText>
-					<LocCanonicalName>.VSIXProject1.MyCommand2</LocCanonicalName>
+					<ButtonText>Generate MicroService Classes</ButtonText>
+					<LocCanonicalName>.MSExtension.CommandGenerateMSClasses</LocCanonicalName>
 				</Strings>
 			</Button>
 		</Buttons>
 	</Commands>
 
 	<Symbols>
-		<GuidSymbol name="VSIXProject1" value="{00ee5e3c-f729-4026-9fa3-f4e6e6231690}">
+		<GuidSymbol name="MSExtension" value="{00ee5e3c-f729-4026-9fa3-f4e6e6231690}">
 			<IDSymbol name="MyMenuGroup" value="0x0001" />
 			<IDSymbol name="MyCommand" value="0x0100" />
-			<IDSymbol name="MyCommand2" value="0x0101" />
+			<IDSymbol name="CommandGenerateMSClasses" value="0x0101" />
 		</GuidSymbol>
 	</Symbols>
 </CommandTable>

@@ -1,11 +1,16 @@
 ﻿using System.IO;
 
-namespace VSIXProject1.CommandsGen.Utils
+namespace MSExtension.CommandsGen.Utils
 {
     public static class StringExtension
     {
         public static string GetFilePath(this string input)
         {
+            if (!input.Contains("Harmonit.Microservice"))
+            {
+                throw new Exception("Local onde foi executado a extensão não encontrou nenhum diretório com o prefixo \"Harmonit.Microservice\". Verifique a estrutura do microserviço.");
+            }
+
             var x = new DirectoryInfo(input);
             var currentRepo = x.Name;
 

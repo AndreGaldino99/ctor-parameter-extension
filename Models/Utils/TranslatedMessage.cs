@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using VSIXProject1.CommandsGen;
+using MSExtension.CommandsGen;
 
-namespace VSIXProject1.Models.Utils
+namespace MSExtension.Models.Utils
 {
     public class TranslatedMessage
     {

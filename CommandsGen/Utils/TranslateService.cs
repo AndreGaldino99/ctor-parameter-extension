@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace VSIXProject1.CommandsGen.Utils
+namespace MSExtension.CommandsGen.Utils
 {
     public static class TranslateService
     {

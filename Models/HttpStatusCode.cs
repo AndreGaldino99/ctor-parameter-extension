@@ -1,4 +1,4 @@
-﻿namespace VSIXProject1.Models
+﻿namespace MSExtension.Models
 {
     public enum HttpStatusCode
     {

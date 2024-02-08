@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using VSIXProject1.CommandsGen.Utils;
-using VSIXProject1.Models;
+using MSExtension.CommandsGen.Utils;
+using MSExtension.Models;
 
-namespace VSIXProject1.CommandsGen
+namespace MSExtension.CommandsGen
 {
     public static class GenRefit
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VSIXProject1.Models
+namespace MSExtension.Models
 {
     public class MainCodeGenerator
     {
@@ -20,5 +20,9 @@ namespace VSIXProject1.Models
         /// Lista de métodos que serão gerados
         /// </summary>
         public List<CodeGeneratorMethod> Method { get; set; }
+        /// <summary>
+        /// Nome do microserviço. Será utilizado para criar a rota do controller
+        /// </summary>
+        public string MicroServiceName { get; internal set; }
     }
 }
