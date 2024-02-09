@@ -34,12 +34,12 @@ namespace MSExtension.CommandsGen
 
         public static void GenerateRefitFile(MainCodeGenerator main, string refit, string rootPath)
         {
-            var pathController = $"{rootPath}.ApiClient\\RefitInterfaces\\{main.BaseName}";
-            bool exists = System.IO.Directory.Exists(pathController);
+            var pathRefit = $"{rootPath}.ApiClient\\RefitInterfaces\\{main.BaseName}";
+            bool exists = System.IO.Directory.Exists(pathRefit);
             if (!exists)
-                System.IO.Directory.CreateDirectory(pathController);
+                System.IO.Directory.CreateDirectory(pathRefit);
 
-            using (StreamWriter sw = new StreamWriter($"{pathController}\\I{main.BaseName}Refit.cs"))
+            using (StreamWriter sw = new StreamWriter($"{pathRefit}\\I{main.BaseName}Refit.cs"))
             {
                 sw.WriteLine(refit);
             }

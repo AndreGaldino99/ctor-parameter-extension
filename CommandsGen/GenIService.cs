@@ -33,12 +33,12 @@ namespace MSExtension.CommandsGen
 
         public static void GenerateIServiceFile(MainCodeGenerator main, string iService, string rootPath)
         {
-            var pathController = $"{rootPath}.Domain\\Interfaces\\{main.BaseName}";
-            bool exists = System.IO.Directory.Exists(pathController);
+            var pathIService = $"{rootPath}.Domain\\Interfaces\\{main.BaseName}";
+            bool exists = System.IO.Directory.Exists(pathIService);
             if (!exists)
-                System.IO.Directory.CreateDirectory(pathController);
+                System.IO.Directory.CreateDirectory(pathIService);
 
-            using (StreamWriter sw = new StreamWriter($"{pathController}\\I{main.BaseName}Service.cs"))
+            using (StreamWriter sw = new StreamWriter($"{pathIService}\\I{main.BaseName}Service.cs"))
             {
                 sw.WriteLine(iService);
             }
