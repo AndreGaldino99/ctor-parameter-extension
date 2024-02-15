@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using MSExtension.CommandsGen.Utils;
+using MSExtension.Models;
+using MSExtension.Models.Utils;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using MSExtension.CommandsGen.Utils;
-using MSExtension.Models;
-using MSExtension.Models.Utils;
 
 namespace MSExtension.CommandsGen
 {

@@ -35,8 +35,8 @@ namespace MSExtension
                 var listOutput = new List<(string Output, CodeGeneratorMethod Method)>();
                 foreach (var method in main.Method)
                 {
-                    listOutput.Add(new(GenOutput.GenerateOutput(main, method),method));
-                    foreach (var param in method.Params?.Where(x=>x.isObject))
+                    listOutput.Add(new(GenOutput.GenerateOutput(main, method), method));
+                    foreach (var param in method.Params?.Where(x => x.isObject))
                     {
                         listInput.Add(new(GenInput.GenerateInput(param), param));
                     }

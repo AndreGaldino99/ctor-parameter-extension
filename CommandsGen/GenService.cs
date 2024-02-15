@@ -1,9 +1,7 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using MSExtension.CommandsGen.Utils;
+using MSExtension.Models;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using MSExtension.CommandsGen.Utils;
-using MSExtension.Models;
 
 namespace MSExtension.CommandsGen
 {
