@@ -4,25 +4,45 @@ using System.IO;
 using System.Text;
 using MSExtension.CommandsGen.Utils;
 using MSExtension.Models;
+using MSExtension.CommandsGen.Base;
 
 namespace MSExtension.CommandsGen
 {
     public static class GenService
     {
-        public static string GenerateService(MainCodeGenerator main)
+        public static string GenerateService(MainCodeGenerator main, string rootPath)
         {
-            var service = new List<string>();
-            service.Add("using Harmonit.Microservice.Base.Library.BaseService;");
-            service.Add($"using {main.BaseNamespace}.ApiClient.RefitInterfaces;");
-            service.Add($"using {main.BaseNamespace}.Arguments;");
-            service.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
-            service.Add($"using {main.BaseNamespace}.Domain.Interfaces;");
-            service.Add("");
+            var pathService = $"{rootPath}.Domain\\Services\\{main.BaseName}\\{main.BaseName}Service.cs";
+            if (!File.Exists(pathService))
+            {
+                var service = new List<string>();
+                service.Add("using Harmonit.Microservice.Base.Library.BaseService;");
+                service.Add($"using {main.BaseNamespace}.ApiClient.RefitInterfaces;");
+                service.Add($"using {main.BaseNamespace}.Arguments;");
+                service.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
+                service.Add($"using {main.BaseNamespace}.Domain.Interfaces;");
+                service.Add("");
 
-            service.Add($"namespace {main.BaseNamespace}.Domain.Services;");
-            service.Add($"public class {main.BaseName}Service(I{main.BaseName}Refit refit) : BaseService_1<I{main.BaseName}Refit>(refit), I{main.BaseName}Service");
-            service.Add("{");
+                service.Add($"namespace {main.BaseNamespace}.Domain.Services;");
+                service.Add($"public class {main.BaseName}Service(I{main.BaseName}Refit refit) : BaseService_1<I{main.BaseName}Refit>(refit), I{main.BaseName}Service");
+                service.Add("{");
 
+                service.AddRange(InsertMethods(main));
+
+                service.Add("}");
+
+                return string.Join(Environment.NewLine, service);
+            }
+            else
+            {
+                var conteudo = File.ReadAllText(pathService);
+                return BaseGen.PushContentBeforeLastOccurrence(conteudo, '}', string.Join(Environment.NewLine, InsertMethods(main)));
+            }
+        }
+
+        private static List<string> InsertMethods(MainCodeGenerator main)
+        {
+            List<string> service = new();
             foreach (var m in main.Method)
             {
                 service.Add($"public async Task<BaseResponseApiContent<List<Output{m.MethodName}{main.BaseName}>, ApiResponseException>> {m.MethodName}({ParamGenerator.GetParams(m.Params)})");
@@ -38,10 +58,7 @@ namespace MSExtension.CommandsGen
                 }
                 service.Add("}");
             }
-
-            service.Add("}");
-
-            return string.Join(Environment.NewLine, service);
+            return service;
         }
 
         public static void GenerateServiceFile(MainCodeGenerator main, string service, string rootPath)

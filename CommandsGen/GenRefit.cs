@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using MSExtension.CommandsGen.Base;
 using MSExtension.CommandsGen.Utils;
 using MSExtension.Models;
 
@@ -9,27 +10,45 @@ namespace MSExtension.CommandsGen
 {
     public static class GenRefit
     {
-        public static string GenerateIRefit(MainCodeGenerator main)
+        public static string GenerateIRefit(MainCodeGenerator main, string rootPath)
         {
-            var iRefit = new List<string>();
-            iRefit.Add("using Refit;");
+            var pathRefit = $"{rootPath}.ApiClient\\RefitInterfaces\\{main.BaseName}\\I{main.BaseName}Refit.cs";
 
-            iRefit.Add("");
+            if (!File.Exists(pathRefit))
+            {
+                var iRefit = new List<string>();
+                iRefit.Add("using Refit;");
 
-            iRefit.Add($"namespace {main.BaseNamespace}.ApiClient.RefitInterfaces;");
-            iRefit.Add($"public interface I{main.BaseName}Refit");
-            iRefit.Add("{");
+                iRefit.Add("");
 
+                iRefit.Add($"namespace {main.BaseNamespace}.ApiClient.RefitInterfaces;");
+                iRefit.Add($"public interface I{main.BaseName}Refit");
+                iRefit.Add("{");
+
+                iRefit.AddRange(InsertMethods(main));
+
+                iRefit.Add("}");
+
+                return string.Join(Environment.NewLine, iRefit);
+            }
+            else
+            {
+                var conteudo = File.ReadAllText(pathRefit);
+                return BaseGen.PushContentBeforeLastOccurrence(conteudo, '}', string.Join(Environment.NewLine, InsertMethods(main)));
+            }
+
+        }
+
+        private static List<string> InsertMethods(MainCodeGenerator main)
+        {
+            List<string> iRefit = new();
             foreach (var m in main.Method)
             {
                 iRefit.Add($"//{m.MethodDesc}");
                 iRefit.Add($"[{m.Method.ToString().Replace("Http", "")}(\"{m.RefitRoute}\")]");
                 iRefit.Add($"Task<ApiResponse<string>> {m.MethodName}({ParamGenerator.GetParams(m.Params, true)});");
             }
-
-            iRefit.Add("}");
-
-            return string.Join(Environment.NewLine, iRefit);
+            return iRefit;
         }
 
         public static void GenerateRefitFile(MainCodeGenerator main, string refit, string rootPath)

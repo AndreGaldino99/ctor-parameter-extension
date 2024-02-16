@@ -16,52 +16,103 @@ namespace MSExtension
         {
             DocumentView docView = VS.Documents.GetActiveDocumentViewAsync()?.Result;
             DTE dte = (DTE)ServiceProvider.GlobalProvider.GetService(typeof(DTE));
-
             var fileContent = File.ReadAllText(docView.FilePath);
 
             var mainList = JsonConvert.DeserializeObject<List<MainCodeGenerator>>(fileContent);
 
             foreach (var main in mainList)
             {
+                string rootPath = GetRootPath(docView, dte, main);
 
-                var rootPath = "C:\\Temp";
-                if (main.GenerateRoot)
+                main.Method = DefineMethodsToApplication(main, rootPath);
+
+                string controller, iService, service, refit;
+                List<(string Input, CodeGeneratorClassParam Param)> listInput;
+                List<(string Output, CodeGeneratorMethod Method)> listOutput;
+                GenerateContentClasses(main, rootPath, out controller, out iService, out service, out refit, out listInput, out listOutput);
+
+                GenerateFileClasses(main, rootPath, controller, iService, service, refit, listInput, listOutput);
+            }
+        }
+
+        private static string GetRootPath(DocumentView docView, DTE dte, MainCodeGenerator main)
+        {
+            var rootPath = "C:\\Temp";
+            if (main.GenerateRoot)
+            {
+                var filePath = docView.FilePath;
+                var solutionPath = filePath.GetFilePath();
+                var solutionName = Path.GetFileNameWithoutExtension(dte.Solution.FullName);
+                rootPath = $"{solutionPath}\\{solutionName}";
+            }
+
+            return rootPath;
+        }
+
+        private static void GenerateFileClasses(MainCodeGenerator main, string rootPath, string controller, string iService, string service, string refit, List<(string Input, CodeGeneratorClassParam Param)> listInput, List<(string Output, CodeGeneratorMethod Method)> listOutput)
+        {
+            GenController.GenerateControllerFile(main, controller, rootPath);
+            GenIService.GenerateIServiceFile(main, iService, rootPath);
+            GenService.GenerateServiceFile(main, service, rootPath);
+            GenRefit.GenerateRefitFile(main, refit, rootPath);
+
+            foreach (var (Input, Param) in listInput)
+            {
+                GenInput.GenerateInputFile(main, Param, Input, rootPath);
+            }
+            foreach (var (Output, Method) in listOutput)
+            {
+                GenOutput.GenerateOutputFile(main, Method, Output, rootPath);
+            }
+        }
+
+        private static void GenerateContentClasses(MainCodeGenerator main, string rootPath, out string controller, out string iService, out string service, out string refit, out List<(string Input, CodeGeneratorClassParam Param)> listInput, out List<(string Output, CodeGeneratorMethod Method)> listOutput)
+        {
+            controller = GenController.GenerateController(main, rootPath);
+            iService = GenIService.GenerateIService(main, rootPath);
+            service = GenService.GenerateService(main, rootPath);
+            refit = GenRefit.GenerateIRefit(main, rootPath);
+            listInput = new List<(string Input, CodeGeneratorClassParam Param)>();
+            listOutput = new List<(string Output, CodeGeneratorMethod Method)>();
+            foreach (var method in main.Method)
+            {
+                listOutput.Add(new(GenOutput.GenerateOutput(main, method), method));
+                foreach (var param in method.Params?.Where(x => x.isObject))
                 {
-                    var filePath = docView.FilePath;
-                    var solutionPath = filePath.GetFilePath();
-                    var solutionName = Path.GetFileNameWithoutExtension(dte.Solution.FullName);
-                    rootPath = $"{solutionPath}\\{solutionName}";
+                    listInput.Add(new(GenInput.GenerateInput(param), param));
                 }
+            }
+        }
 
-                var controller = GenController.GenerateController(main);
-                var iService = GenIService.GenerateIService(main);
-                var service = GenService.GenerateService(main);
-                var refit = GenRefit.GenerateIRefit(main);
+        private static List<CodeGeneratorMethod> DefineMethodsToApplication(MainCodeGenerator main, string rootPath)
+        {
+            var pathRefit = $"{rootPath}.ApiClient\\RefitInterfaces\\{main.BaseName}\\I{main.BaseName}Refit.cs";
+            if (File.Exists(pathRefit))
+            {
+                var fileContent = File.ReadAllText(pathRefit);
 
-                var listInput = new List<(string Input, CodeGeneratorClassParam Param)>();
-                var listOutput = new List<(string Output, CodeGeneratorMethod Method)>();
-                foreach (var method in main.Method)
+                var methods = main.Method;
+
+                var listRemove = new List<CodeGeneratorMethod>();
+
+                foreach (var method in methods)
                 {
-                    listOutput.Add(new(GenOutput.GenerateOutput(main, method),method));
-                    foreach (var param in method.Params?.Where(x=>x.isObject))
+                    if (fileContent.Contains($"{method.MethodName}("))
                     {
-                        listInput.Add(new(GenInput.GenerateInput(param), param));
+                        listRemove.Add(method);
                     }
                 }
 
-                GenController.GenerateControllerFile(main, controller, rootPath);
-                GenIService.GenerateIServiceFile(main, iService, rootPath);
-                GenService.GenerateServiceFile(main, service, rootPath);
-                GenRefit.GenerateRefitFile(main, refit, rootPath);
+                foreach (var method in listRemove)
+                {
+                    methods.Remove(method);
+                }
 
-                foreach (var (Input, Param) in listInput)
-                {
-                    GenInput.GenerateInputFile(main, Param, Input, rootPath);
-                }
-                foreach (var (Output, Method) in listOutput)
-                {
-                    GenOutput.GenerateOutputFile(main, Method, Output, rootPath);
-                }
+                return methods;
+            }
+            else
+            {
+                return main.Method;
             }
         }
     }

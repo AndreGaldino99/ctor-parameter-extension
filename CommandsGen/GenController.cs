@@ -7,30 +7,49 @@ using System.Text;
 using MSExtension.CommandsGen.Utils;
 using MSExtension.Models;
 using MSExtension.Models.Utils;
+using MSExtension.CommandsGen.Base;
 
 namespace MSExtension.CommandsGen
 {
-    public static class GenController
+    public static class GenController 
     {
-        public static string GenerateController(MainCodeGenerator main)
+        public static string GenerateController(MainCodeGenerator main, string rootPath)
         {
-            var controller = new List<string>();
+            var pathController = $"{rootPath}.Api\\Controllers\\{main.BaseName}\\{main.BaseName}Controller.cs";
+            if (!File.Exists(pathController))
+            {
+                var controller = new List<string>();
+                controller.Add($"using Harmonit.Microservice.Base.Library.BaseController;");
+                controller.Add($"using Harmonit.Microservice.Base.Library.Generic;");
+                controller.Add($"using {main.BaseNamespace}.Arguments;");
+                controller.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
+                controller.Add($"using {main.BaseNamespace}.Domain.Interfaces;");
+                controller.Add($"using Harmonit.Notifications.Arguments;");
+                controller.Add($"using Microsoft.AspNetCore.Mvc;");
+                controller.Add("");
 
-            controller.Add($"using Harmonit.Microservice.Base.Library.BaseController;");
-            controller.Add($"using Harmonit.Microservice.Base.Library.Generic;");
-            controller.Add($"using {main.BaseNamespace}.Arguments;");
-            controller.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
-            controller.Add($"using {main.BaseNamespace}.Domain.Interfaces;");
-            controller.Add($"using Harmonit.Notifications.Arguments;");
-            controller.Add($"using Microsoft.AspNetCore.Mvc;");
-            controller.Add("");
+                controller.Add($"namespace {main.BaseNamespace}.Api.Controllers;");
+                controller.Add("");
+                controller.Add($"[Route(\"api/{main.MicroServiceName}/[controller]\")]");
+                controller.Add($"public class {main.BaseName}Controller(IApiDataService apiDataService, I{main.BaseName}Service service) : BaseController_1<I{main.BaseName}Service>(apiDataService, service)");
+                controller.Add("{");
 
-            controller.Add($"namespace {main.BaseNamespace}.Api.Controllers;");
-            controller.Add("");
-            controller.Add($"[Route(\"api/{main.MicroServiceName}/[controller]\")]");
-            controller.Add($"public class {main.BaseName}Controller(IApiDataService apiDataService, I{main.BaseName}Service service) : BaseController_1<I{main.BaseName}Service>(apiDataService, service)");
-            controller.Add("{");
+                controller.AddRange(InsertMethods(main));
 
+                controller.Add("}");
+
+                return string.Join(Environment.NewLine, controller);
+            }
+            else
+            {
+                var conteudo = File.ReadAllText(pathController);
+                return BaseGen.PushContentBeforeLastOccurrence(conteudo, '}', string.Join(Environment.NewLine, InsertMethods(main)));
+            }
+        }
+
+        private static List<string> InsertMethods(MainCodeGenerator main)
+        {
+            List<string> controller = new();
             foreach (var m in main.Method)
             {
                 try
@@ -84,10 +103,7 @@ namespace MSExtension.CommandsGen
                 controller.Add("}");
 
             }
-
-            controller.Add("}");
-
-            return string.Join(Environment.NewLine, controller);
+            return controller;
         }
 
         public static void GenerateControllerFile(MainCodeGenerator main, string controller, string rootPath)
