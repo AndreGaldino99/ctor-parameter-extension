@@ -1,5 +1,5 @@
-﻿using MSExtension.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MSExtension.Models;
 
 namespace MSExtension.CommandsGen.Utils
 {
@@ -10,7 +10,7 @@ namespace MSExtension.CommandsGen.Utils
             var listP = new List<string>();
             foreach (var p in parameter)
             {
-                if (p.isHeader && p.isQuery)
+                if(p.isHeader && p.isQuery)
                 {
                     throw new Exception("Parâmentro não pode ser do tipo query e header ao mesmo tempo");
                 }

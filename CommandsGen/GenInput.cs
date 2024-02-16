@@ -1,6 +1,7 @@
-﻿using MSExtension.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using MSExtension.Models;
 
 namespace MSExtension.CommandsGen
 {

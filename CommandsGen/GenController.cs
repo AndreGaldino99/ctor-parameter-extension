@@ -1,10 +1,12 @@
-﻿using MSExtension.CommandsGen.Utils;
-using MSExtension.Models;
-using MSExtension.Models.Utils;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using MSExtension.CommandsGen.Utils;
+using MSExtension.Models;
+using MSExtension.Models.Utils;
 
 namespace MSExtension.CommandsGen
 {
@@ -95,7 +97,7 @@ namespace MSExtension.CommandsGen
             if (!exists)
                 System.IO.Directory.CreateDirectory(pathController);
 
-            using (StreamWriter sw = new StreamWriter($"{pathController}\\{main.BaseName}Controller.cs"))
+            using (StreamWriter sw = new($"{pathController}\\{main.BaseName}Controller.cs"))
             {
                 sw.WriteLine(controller);
             }
