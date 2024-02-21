@@ -23,6 +23,10 @@ namespace MSExtension.Models
         /// <summary>
         /// Nome do microserviço. Será utilizado para criar a rota do controller
         /// </summary>
-        public string MicroServiceName { get; internal set; }
+        public string MicroServiceName { get; set; }
+        /// <summary>
+        /// Quando verdadeiro, serão geradas as traduções baseadas no <see cref="CodeGeneratorMethod.MethodDesc"/>. Falso por padrão pois pode ocasionar em demora e travamento do visual studio.
+        /// </summary>
+        public bool GenerateTranslations { get; set; }
     }
 }

@@ -14,15 +14,16 @@ namespace MSExtension.CommandsGen
             var pathIService = $"{rootPath}.Domain\\Interfaces\\{main.BaseName}\\I{main.BaseName}Service.cs";
             if (!File.Exists(pathIService))
             {
-                var iService = new List<string>();
-                iService.Add($"using Harmonit.Microservice.Base.Library.BaseService;");
-                iService.Add($"using {main.BaseNamespace}.Arguments;");
-                iService.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
-                iService.Add($"");
-
-                iService.Add($"namespace {main.BaseNamespace}.Domain.Interfaces;");
-                iService.Add($"public interface I{main.BaseName}Service : IBaseService_0");
-                iService.Add("{");
+                var iService = new List<string>
+                {
+                    $"using Harmonit.Microservice.Base.Library.BaseService;",
+                    $"using {main.BaseNamespace}.Arguments;",
+                    $"using {main.BaseNamespace}.Domain.ApiResponse;",
+                    $"",
+                    $"namespace {main.BaseNamespace}.Domain.Interfaces;",
+                    $"public interface I{main.BaseName}Service : IBaseService_0",
+                    "{"
+                };
 
                 iService.AddRange(InsertMethods(main));
 
@@ -42,7 +43,7 @@ namespace MSExtension.CommandsGen
             List<string> iService = new();
             foreach (var m in main.Method)
             {
-                iService.Add($"Task<BaseResponseApiContent<List<Output{m.MethodName}{main.BaseName}>, ApiResponseException>> {m.MethodName}({ParamGenerator.GetParams(m.Params)});");
+                iService.Add($"    Task<BaseResponseApiContent<List<Output{m.MethodName}{main.BaseName}>, ApiResponseException>> {m.MethodName}({ParamGenerator.GetParams(m.Params)});");
             }
             return iService;
         }

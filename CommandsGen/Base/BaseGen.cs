@@ -11,7 +11,7 @@ namespace MSExtension.CommandsGen.Base
 
             if (lastOccurrence != -1) 
             {
-                sb.Insert(lastOccurrence, aditionalContent); 
+                sb.Insert(lastOccurrence, aditionalContent + Environment.NewLine); 
             }
 
             return sb.ToString();

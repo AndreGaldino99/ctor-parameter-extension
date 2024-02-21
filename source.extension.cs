@@ -11,7 +11,7 @@ namespace MSExtension
         public const string Name = "MSExtension";
         public const string Description = @"MSExtension Project.";
         public const string Language = "en-US";
-        public const string Version = "1.1";
+        public const string Version = "1.2";
         public const string Author = "andre";
         public const string Tags = "";
     }

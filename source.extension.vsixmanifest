@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="MSExtension.b1adf3e7-1c09-43d2-a808-245d7ef68309" Version="1.1" Language="en-US" Publisher="andre" />
+        <Identity Id="MSExtension.b1adf3e7-1c09-43d2-a808-245d7ef68309" Version="1.2" Language="en-US" Publisher="andre" />
         <DisplayName>MSExtension</DisplayName>
         <Description xml:space="preserve">MSExtension Project.</Description>
         <Icon>Resources\Icon.png</Icon>

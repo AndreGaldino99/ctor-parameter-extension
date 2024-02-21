@@ -1,4 +1,5 @@
 ﻿using EnvDTE;
+using Microsoft.VisualStudio.Shell.Interop;
 using MSExtension.CommandsGen;
 using MSExtension.CommandsGen.Utils;
 using MSExtension.Models;
@@ -33,6 +34,8 @@ namespace MSExtension
 
                 GenerateFileClasses(main, rootPath, controller, iService, service, refit, listInput, listOutput);
             }
+
+            EndExtensionMessage();
         }
 
         private static string GetRootPath(DocumentView docView, DTE dte, MainCodeGenerator main)
@@ -114,6 +117,72 @@ namespace MSExtension
             {
                 return main.Method;
             }
+        }
+
+        private static void EndExtensionMessage()
+        {
+            var vsUIShell = (IVsUIShell)ServiceProvider.GlobalProvider.GetService(typeof(SVsUIShell));
+            string mensagem = $"Foram geradas as classes de \"Controller\", \"IService\", \"Service\", \"Refit\" e os Inputs e Outputs necessários." +
+                                "\nNão esqueça de atualizar a coleção de injeção de dependencias";
+
+            vsUIShell.ShowMessageBox(
+                0,
+                Guid.Empty,
+                "Classes Geradas com sucesso",
+                mensagem,
+                string.Empty,
+                0,
+                OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
+                OLEMSGICON.OLEMSGICON_INFO,
+                0,
+                out _);
+
+
+
+            //// Cria uma nova caixa de diálogo
+            //Form dialog = new Form();
+            //dialog.Text = "Título do Popup";
+            //dialog.Size = new System.Drawing.Size(300, 150);
+
+            //// Adiciona um rótulo com a mensagem
+            //Label label = new Label();
+            //label.Text = "Minha mensagem de popup";
+            //label.Dock = DockStyle.Top;
+            //label.TextAlign = ContentAlignment.MiddleCenter;
+            //dialog.Controls.Add(label);
+
+            //// Adiciona botões personalizados
+            //Button btnSim = new()
+            //{
+            //    Text = "Sim",
+            //    DialogResult = DialogResult.Yes,
+            //    Dock = DockStyle.Left
+            //};
+            //dialog.Controls.Add(btnSim);
+
+            //Button btnNao = new Button();
+            //btnNao.Text = "Não";
+            //btnNao.DialogResult = DialogResult.No;
+            //btnNao.Dock = DockStyle.Right;
+            //dialog.Controls.Add(btnNao);
+
+            //// Exibe a caixa de diálogo como um diálogo modal
+            //DialogResult result = dialog.ShowDialog();
+
+            //// Verifica qual botão foi pressionado e toma a ação apropriada
+            //switch (result)
+            //{
+            //    case DialogResult.Yes:
+            //        // O usuário pressionou "Sim", faça algo...
+            //        break;
+            //    case DialogResult.No:
+            //        // O usuário pressionou "Não", faça algo...
+            //        break;
+            //    default:
+            //        // O usuário fechou a caixa de diálogo sem pressionar nenhum botão ou algo deu errado...
+            //        break;
+            //}
         }
     }
 }

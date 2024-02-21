@@ -15,17 +15,18 @@ namespace MSExtension.CommandsGen
             var pathService = $"{rootPath}.Domain\\Services\\{main.BaseName}\\{main.BaseName}Service.cs";
             if (!File.Exists(pathService))
             {
-                var service = new List<string>();
-                service.Add("using Harmonit.Microservice.Base.Library.BaseService;");
-                service.Add($"using {main.BaseNamespace}.ApiClient.RefitInterfaces;");
-                service.Add($"using {main.BaseNamespace}.Arguments;");
-                service.Add($"using {main.BaseNamespace}.Domain.ApiResponse;");
-                service.Add($"using {main.BaseNamespace}.Domain.Interfaces;");
-                service.Add("");
-
-                service.Add($"namespace {main.BaseNamespace}.Domain.Services;");
-                service.Add($"public class {main.BaseName}Service(I{main.BaseName}Refit refit) : BaseService_1<I{main.BaseName}Refit>(refit), I{main.BaseName}Service");
-                service.Add("{");
+                var service = new List<string>
+                {
+                    "using Harmonit.Microservice.Base.Library.BaseService;",
+                    $"using {main.BaseNamespace}.ApiClient.RefitInterfaces;",
+                    $"using {main.BaseNamespace}.Arguments;",
+                    $"using {main.BaseNamespace}.Domain.ApiResponse;",
+                    $"using {main.BaseNamespace}.Domain.Interfaces;",
+                    "",
+                    $"namespace {main.BaseNamespace}.Domain.Services;",
+                    $"public class {main.BaseName}Service(I{main.BaseName}Refit refit) : BaseService_1<I{main.BaseName}Refit>(refit), I{main.BaseName}Service",
+                    "{"
+                };
 
                 service.AddRange(InsertMethods(main));
 
@@ -45,18 +46,18 @@ namespace MSExtension.CommandsGen
             List<string> service = new();
             foreach (var m in main.Method)
             {
-                service.Add($"public async Task<BaseResponseApiContent<List<Output{m.MethodName}{main.BaseName}>, ApiResponseException>> {m.MethodName}({ParamGenerator.GetParams(m.Params)})");
-                service.Add("{");
-                service.Add($"var response = await _refit!.{m.MethodName}({ParamGenerator.GetParamsWithoutType(m.Params)});");
+                service.Add($"    public async Task<BaseResponseApiContent<List<Output{m.MethodName}{main.BaseName}>, ApiResponseException>> {m.MethodName}({ParamGenerator.GetParams(m.Params)})");
+                service.Add("    {");
+                service.Add($"        var response = await _refit!.{m.MethodName}({ParamGenerator.GetParamsWithoutType(m.Params)});");
                 if (m.ReturnResponseIsList)
                 {
-                    service.Add($"return ReturnResponse<List<Output{m.MethodName}{main.BaseName}>, ApiResponseException>(response)!;");
+                    service.Add($"        return ReturnResponse<List<Output{m.MethodName}{main.BaseName}>, ApiResponseException>(response)!;");
                 }
                 else
                 {
-                    service.Add($"return ReturnResponse<Output{m.MethodName}{main.BaseName}, ApiResponseException>(response)!;");
+                    service.Add($"        return ReturnResponse<Output{m.MethodName}{main.BaseName}, ApiResponseException>(response)!;");
                 }
-                service.Add("}");
+                service.Add("    }");
             }
             return service;
         }

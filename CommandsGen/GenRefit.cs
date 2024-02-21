@@ -16,14 +16,14 @@ namespace MSExtension.CommandsGen
 
             if (!File.Exists(pathRefit))
             {
-                var iRefit = new List<string>();
-                iRefit.Add("using Refit;");
-
-                iRefit.Add("");
-
-                iRefit.Add($"namespace {main.BaseNamespace}.ApiClient.RefitInterfaces;");
-                iRefit.Add($"public interface I{main.BaseName}Refit");
-                iRefit.Add("{");
+                var iRefit = new List<string>
+                {
+                    "using Refit;",
+                    "",
+                    $"namespace {main.BaseNamespace}.ApiClient.RefitInterfaces;",
+                    $"public interface I{main.BaseName}Refit",
+                    "{"
+                };
 
                 iRefit.AddRange(InsertMethods(main));
 
@@ -44,9 +44,9 @@ namespace MSExtension.CommandsGen
             List<string> iRefit = new();
             foreach (var m in main.Method)
             {
-                iRefit.Add($"//{m.MethodDesc}");
-                iRefit.Add($"[{m.Method.ToString().Replace("Http", "")}(\"{m.RefitRoute}\")]");
-                iRefit.Add($"Task<ApiResponse<string>> {m.MethodName}({ParamGenerator.GetParams(m.Params, true)});");
+                iRefit.Add($"    //{m.MethodDesc}");
+                iRefit.Add($"    [{m.Method.ToString().Replace("Http", "")}(\"{m.RefitRoute}\")]");
+                iRefit.Add($"    Task<ApiResponse<string>> {m.MethodName}({ParamGenerator.GetParams(m.Params, true)});");
             }
             return iRefit;
         }
